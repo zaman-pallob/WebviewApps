@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
-import 'package:webview_flutter/webview_flutter.dart';
+
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:swipedetector/swipedetector.dart';
 
 void main() {
   runApp(MyApp());
@@ -22,19 +23,38 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final flutterWebviewPlugin = new FlutterWebviewPlugin();
   @override
   void initState() {
     super.initState();
-    if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: WebView(
-        initialUrl: 'https://google.com',
+    return SwipeDetector(
+      child: WebviewScaffold(
+        url: "https://tornadoexpressbd.com",
+        withJavascript: true,
+        withZoom: false,
+        appBar: AppBar(
+          title: Stack(
+            children: <Widget>[
+              Container(child: Center(child: Text("Dash"))),
+            ],
+          ),
+          elevation: 1,
+        ),
       ),
+      onSwipeDown: () {
+        flutterWebviewPlugin.reload();
+      },
+      swipeConfiguration: SwipeConfiguration(
+          verticalSwipeMinVelocity: 100.0,
+          verticalSwipeMinDisplacement: 50.0,
+          verticalSwipeMaxWidthThreshold: 100.0,
+          horizontalSwipeMaxHeightThreshold: 50.0,
+          horizontalSwipeMinDisplacement: 50.0,
+          horizontalSwipeMinVelocity: 200.0),
     );
   }
 }
